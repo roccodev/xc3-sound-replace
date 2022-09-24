@@ -7,11 +7,11 @@ not responsible for anything that could happen to your saves, game, console, acc
 ## Usage
 
 #### Switch
-1. Download the latest version of the mod from the [Releases](releases/latest) page.
+1. Download the latest version of the mod from the [Releases](https://github.com/RoccoDev/xc3-sound-replace/releases/latest) page.
 2. Extract the archive to root of your SD card.
 
 #### Ryujinx
-1. Download the latest version of the mod from the [Releases](releases/latest) page.
+1. Download the latest version of the mod from the [Releases](https://github.com/RoccoDev/xc3-sound-replace/releases/latest) page.
 2. Open Ryujinx, then right-click on the game and select "Open Atmosphere Mods Directory".
 3. From the archive, extract the `exefs` and `romfs` directory into the folder you opened.
 
