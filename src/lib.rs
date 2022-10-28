@@ -3,7 +3,7 @@ use skyline::{hook, hooks::Region};
 
 static mut REPLACEMENT_SET: Option<FnvHashSet<u32>> = None;
 
-#[hook(offset = 0x0006399c)]
+#[hook(offset = 0x000642bc)]
 unsafe fn wwise_file_open(
     this: u64,
     file_name: u32,
@@ -21,7 +21,7 @@ unsafe fn wwise_file_open(
         .is_some()
     {
         let txt_ptr = skyline::hooks::getRegionAddress(Region::Text) as *mut u8;
-        let super_ptr = txt_ptr.offset(0x0005d8ac);
+        let super_ptr = txt_ptr.offset(0x0005db3c);
         let font_fn: extern "C" fn(u64, u32, u32, *const u32, *const i8, u64) -> u64 =
             std::mem::transmute(super_ptr);
         (font_fn)(this, file_name, p3, p4, p5, p6)
