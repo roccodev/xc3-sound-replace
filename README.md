@@ -17,8 +17,15 @@ not responsible for anything that could happen to your saves, game, console, acc
 
 #### Replacing sound files
 
-After installing the mod, you can place `.wem` and `.bnk` files in the `/atmosphere/contents/010074f013262000/romfs/sound` folder.
+After installing the mod, you can place `.wem`  files in the `/atmosphere/contents/010074f013262000/romfs/sound` folder.
 When the game tries to load those files from the game's original archive, the mod will load the custom ones instead.
+
+#### Replacing sound banks
+
+For sound banks (`.bnk` files), the procedure is slightly different. You need both the hashed and unhashed name of the bank.
+
+For example, for `bgm_es.bnk`, create an empty (doesn't matter) file in `romfs/sound` called `3214266068.bnk`
+(`3214266068` is the FNV1-32 hash for `bgm_es`), then put your modified bank in `romfs/sound/bgm_es.bnk` (using the real name).
 
 ## Build instructions
 To build the project, install [Rust](https://rustup.rs/) and run
