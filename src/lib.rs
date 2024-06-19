@@ -1,17 +1,10 @@
 use fnv::FnvHashSet;
-use skyline::{hook, hooks::Region};
+use skyline::hook;
 
 static mut REPLACEMENT_SET: Option<FnvHashSet<u32>> = None;
 
-#[hook(offset = 0x000642bc)]
-unsafe fn wwise_file_open(
-    this: u64,
-    file_name: u32,
-    p3: u32,
-    p4: *const u32,
-    p5: *const i8,
-    p6: u64,
-) -> u64 {
+#[hook(offset = 0x0005e0b8)]
+unsafe fn wwise_file_open(this: u64, file_name: u32, p3: u64) -> u64 {
     // The game will try to load the file from the File Package (.pck) archive, but it will fall back
     // to the rom:/sound directory if it's not found. By skipping the file lookup, we can force it to
     // load from the base directory instead of the archive.
@@ -20,13 +13,9 @@ unsafe fn wwise_file_open(
         .and_then(|s| s.get(&file_name))
         .is_some()
     {
-        let txt_ptr = skyline::hooks::getRegionAddress(Region::Text) as *mut u8;
-        let super_ptr = txt_ptr.offset(0x0005db3c);
-        let font_fn: extern "C" fn(u64, u32, u32, *const u32, *const i8, u64) -> u64 =
-            std::mem::transmute(super_ptr);
-        (font_fn)(this, file_name, p3, p4, p5, p6)
+        0
     } else {
-        call_original!(this, file_name, p3, p4, p5, p6)
+        call_original!(this, file_name, p3)
     }
 }
 
@@ -35,7 +24,13 @@ pub fn main() {
     println!("[XC3-SND] Loading...");
 
     let mut file_set = FnvHashSet::default();
-    let sound_dir = std::fs::read_dir("rom:/sound/").expect("TODO");
+    let sound_dir = match std::fs::read_dir("rom:/sound/") {
+        Ok(dir) => dir,
+        Err(e) => {
+            println!("[XC3-SND] Could not open sound dir: {e:?}");
+            return;
+        }
+    };
 
     for sound_file in sound_dir {
         if let Ok(entry) = sound_file {

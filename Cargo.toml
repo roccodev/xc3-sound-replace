@@ -1,6 +1,6 @@
 [package]
 name = "xc3-sound-replace"
-version = "0.1.1"
+version = "1.0.0"
 authors = ["RoccoDev <hey@rocco.dev>"]
 edition = "2021"
 license = "gpl-3.0"
